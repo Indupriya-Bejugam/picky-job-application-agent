@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 
 export default function Home() {
   return (
@@ -16,17 +16,26 @@ export default function Home() {
           and application tracking — all in one place.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button render={<Link href="/sign-up" />} size="lg" className="h-10 min-w-36 text-sm">
+                    <Link
+            href="/sign-up"
+            className={buttonVariants({
+              size: "lg",
+              className: "h-10 min-w-36 text-sm",
+            })}
+          >
             Get started
-          </Button>
-          <Button
-            render={<Link href="/sign-in" />}
-            variant="outline"
-            size="lg"
-            className="h-10 min-w-36 text-sm"
+          </Link>
+
+          <Link
+            href="/sign-in"
+            className={buttonVariants({
+              variant: "outline",
+              size: "lg",
+              className: "h-10 min-w-36 text-sm",
+            })}
           >
             Sign in
-          </Button>
+          </Link>
         </div>
       </div>
     </div>
