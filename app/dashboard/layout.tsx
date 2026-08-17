@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 
 import { DashboardShell } from "@/components/dashboard/dashboard-shell"
+import { ResumeOnboardingDialog } from "@/components/onboarding/resume-onboarding-dialog"
 
 export default async function DashboardLayout({
   children,
@@ -21,7 +22,9 @@ export default async function DashboardLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, email")
+    .select(
+      "full_name, email, onboarding_completed_at"
+    )
     .eq("id", user.id)
     .single()
 
@@ -32,14 +35,23 @@ export default async function DashboardLayout({
     user.email?.split("@")[0] ||
     "User"
 
+  const needsOnboarding =
+    !profile?.onboarding_completed_at
+
   return (
-    <DashboardShell
-      user={{
-        name: displayName,
-        email: profile?.email || user.email || "",
-      }}
-    >
-      {children}
-    </DashboardShell>
+    <>
+      <DashboardShell
+        user={{
+          name: displayName,
+          email: profile?.email || user.email || "",
+        }}
+      >
+        {children}
+      </DashboardShell>
+
+      <ResumeOnboardingDialog
+        open={needsOnboarding}
+      />
+    </>
   )
 }
